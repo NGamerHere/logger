@@ -45,6 +45,9 @@ app.get('/', (req, res) => {
 
 app.get('/login', (req, res) => {
     const message = req.query.message;
+    if (req.session.userId){
+        return res.redirect('/dashboard');
+    }
     if (message === undefined) {
         res.render('login', { message: ' ' ,messAlert:''});
     } else {
@@ -104,10 +107,7 @@ app.post('/registration', async (req, res) => {
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
-    // Check if the user is already logged in
-    if (req.session.userId) {
-        return res.redirect('/dashboard');
-    }
+
     const user = await User.findOne({ email: email });
 
     if (user) {
