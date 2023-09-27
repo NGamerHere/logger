@@ -1,13 +1,12 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const bcrypt=require('bcrypt');
 const saltRound=10;
-const url = 'mongodb+srv://<n11>@loginuserdata.9ldipu1.mongodb.net/?retryWrites=true&w=majority';
+const url = 'mongodb://127.0.0.1:27017/logger';
 const app = express();
-const User=require('./Models');
+const User=require('./model');
 
 app.set('view engine', 'ejs');
 
@@ -38,9 +37,12 @@ function requireLogin(req, res, next) {
 
 app.get('/', (req, res) => {
     if (!req.session.userId){
-        return res.render('main',{show:false});
+        return res.render('main',{show:false,newShow:true,message:false});
     }
-    res.render('main',{show:true});
+    if (req.query.message==='main'){
+        return res.render('main',{show:false,newShow:true,message:true});
+    }
+    res.render('main',{show:true,newShow:false,message:false});
 });
 
 app.get('/login', (req, res) => {
@@ -71,7 +73,6 @@ app.get('/dashboard', requireLogin, async (req, res) => {
 app.get('/logout', (req, res) => {
 
     req.session.destroy();
-    // Redirect to the login page
     res.redirect('/login?message=you+have+successfully+logged+out');
 });
 

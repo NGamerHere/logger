@@ -12,9 +12,12 @@
         <h1 class="display-3">Logger</h1>
         <p class="lead">Login and regsistor you</p>
         <hr>
+        <%if(newShow){%>
         <a class="btn btn-light btn-lg" href="/registration" role="button">Register</a>
         <a class="btn btn-dark btn-lg" href="/login" role="button">Login</a>
+        <%}%>
         <%if(show){%>
+            <a class="btn btn-dark btn-lg" href="/logout?message=main" role="button">logout</a>
           <a class="btn btn-dark btn-lg" href="/dashboard" role="button">dashboard</a>
         <%}%>
     </div>
