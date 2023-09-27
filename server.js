@@ -66,14 +66,23 @@ app.get('/dashboard', requireLogin, async (req, res) => {
 
     // Fetch user data based on userId and render the dashboard
     const flame=await User.findById(userId);
-    console.log(flame)
     res.render('dashboard',{name:flame.name});
 });
 
-app.get('/logout', (req, res) => {
+app.get('/logout', async (req, res) => {
+    if (req.session.userId) {
+        const flame = await User.findById(req.session.userId);
+        if (flame) {
+            console.log(flame.name + " was logged out");
+            req.session.destroy();
 
-    req.session.destroy();
-    res.redirect('/login?message=you+have+successfully+logged+out');
+           return  res.redirect('/login?message=you+have+successfully+logged+out');
+        }
+    }
+    else {
+        return  res.redirect('/');
+    }
+
 });
 
 app.post('/registration', async (req, res) => {
@@ -118,6 +127,7 @@ app.post('/login', async (req, res) => {
             req.session.userId = user._id;
             // Check if the response has already been sent
             if (!res.headersSent) {
+                console.log(user.name+" was log in");
                 res.redirect('/dashboard');
             }
         } else {
