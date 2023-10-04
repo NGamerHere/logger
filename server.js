@@ -12,11 +12,12 @@ const app = express();
 app.set('view engine', 'ejs');
 
 app.use(session({
-    secret: 'hello there', // Replace with your session secret
+    secret: 'hello there',
     resave: false,
     saveUninitialized: true,
     cookie: {
         secure: false,
+        //the user was login in for 7 days
         maxAge: 60 * 60 * 24 * 7 * 1000,
     },
 }));
@@ -24,7 +25,8 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('Connected!'));
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('Connected!'))
+    .catch((error)=>{console.log("there  was error in connecting the mongodb: "+error)});
 
 
 
