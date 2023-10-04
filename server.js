@@ -1,12 +1,13 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const session = require('express-session');
-const bcrypt=require('bcrypt');
+import express from "express";
+import bodyParser from "body-parser";
+import session from "express-session";
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import User from "./model.js";
 const saltRound=10;
 const url = 'mongodb://127.0.0.1:27017/logger';
 const app = express();
-const User=require('./model');
+
 
 app.set('view engine', 'ejs');
 
@@ -116,6 +117,8 @@ app.post('/registration', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
+
+
 
 
     const user = await User.findOne({ email: email });
