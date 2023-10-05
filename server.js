@@ -1,9 +1,9 @@
 import express from "express";
 import bodyParser from "body-parser";
 import session from "express-session";
-import mongoose from "mongoose";
+import DBConnector from "./connections.js";
 import bcrypt from "bcrypt";
-import User from "./model.js";
+import User from "./models/model.js";
 import IpLogger from "./middleWares/Iplogger.js";
 import requireLogin from "./middleWares/requireLogin.js";
 const saltRound=10;
@@ -28,11 +28,10 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('Connected!'))
-    .catch((error)=>{console.log("there  was error in connecting the mongodb: "+error)});
 
 
 
+DBConnector(url);
 
 
 
