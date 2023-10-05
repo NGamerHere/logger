@@ -4,9 +4,12 @@ import session from "express-session";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import User from "./model.js";
+import IpLogger from "./middleWares/Iplogger.js";
+import requireLogin from "./middleWares/requireLogin.js";
 const saltRound=10;
 const url = 'mongodb://127.0.0.1:27017/logger';
 const app = express();
+
 
 
 app.set('view engine', 'ejs');
@@ -30,15 +33,10 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }).then(
 
 
 
-// Middleware to check for a valid session
-function requireLogin(req, res, next) {
-    if (!req.session.userId) {
-        return res.redirect('/login');
-    }
-    next();
-}
 
-app.get('/', (req, res) => {
+
+
+app.get('/', IpLogger, (req, res) => {
     if (!req.session.userId){
         return res.render('main',{show:false,newShow:true,message:false});
     }
