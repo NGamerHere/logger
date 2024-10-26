@@ -135,9 +135,6 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.get('/testing',(req,res)=>{
-    res.send('this is testing and working');
-});
 
 app.listen(3001, () => {
     console.log('Server is running on port 3000');
