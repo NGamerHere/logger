@@ -20,7 +20,6 @@ app.use(session({
     saveUninitialized: true,
     cookie: {
         secure: false,
-        //the user was login in for 7 days
         maxAge: 60 * 60 * 24 * 7 * 1000,
     },
 }));
@@ -116,10 +115,6 @@ app.post('/registration', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
-
-
-
-
     const user = await User.findOne({ email: email });
 
     if (user) {
@@ -138,7 +133,11 @@ app.post('/login', async (req, res) => {
     } else {
         res.render('login', { message: 'User not found',messAlert:'error' });
     }
-})
+});
+
+app.get('/testing',(req,res)=>{
+    res.send('this is testing and working');
+});
 
 app.listen(3001, () => {
     console.log('Server is running on port 3000');

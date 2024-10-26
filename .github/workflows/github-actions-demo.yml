@@ -25,5 +25,5 @@ jobs:
             cd logger
             git pull origin master
             npm install  
-            pm2 restart all  
+            pm2 restart logger  
           EOF
