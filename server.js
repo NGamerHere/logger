@@ -26,6 +26,7 @@ app.use(session({
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use(IpLogger);
 
 
 
@@ -34,7 +35,7 @@ DBConnector(url);
 
 
 
-app.get('/', IpLogger, (req, res) => {
+app.get('/', (req, res) => {
     if (!req.session.userId){
         return res.render('main',{show:false,newShow:true,message:false});
     }
@@ -62,8 +63,6 @@ app.get('/registration', (req, res) => {
 
 app.get('/dashboard', requireLogin, async (req, res) => {
     const userId = req.session.userId;
-
-    // Fetch user data based on userId and render the dashboard
     const flame=await User.findById(userId);
     res.render('dashboard',{name:flame.name});
 });
@@ -120,9 +119,7 @@ app.post('/login', async (req, res) => {
     if (user) {
         const auth = await bcrypt.compare(password, user.password);
         if (auth) {
-            // Log the user in by creating a session
             req.session.userId = user._id;
-            // Check if the response has already been sent
             if (!res.headersSent) {
                 console.log(user.name+" was log in");
                 res.redirect('/dashboard');
